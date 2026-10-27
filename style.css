@@ -1,0 +1,1130 @@
+/* ===================================================================
+   ML Workshop: Multiple Linear Regression Dashboard Stylesheet
+   設計系統：現代簡潔儀表板、響應式佈局、清晰層次與卡片化視覺
+   =================================================================== */
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+
+  /* 主色系 */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --primary-border: #bfdbfe;
+
+  /* 輔助色系 */
+  --secondary: #0d9488;
+  --secondary-light: #f0fdfa;
+  --accent: #6366f1;
+  --accent-light: #eef2ff;
+
+  /* 狀態色 */
+  --success: #16a34a;
+  --success-light: #f0fdf4;
+  --warning: #d97706;
+  --warning-light: #fffbeb;
+  --danger: #dc2626;
+  --danger-light: #fef2f2;
+  --info: #0284c7;
+  --info-light: #f0f9ff;
+
+  /* 中性色 (Slate 階度) */
+  --bg-app: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #f1f5f9;
+  --border-light: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-on-primary: #ffffff;
+
+  /* 陰影與圓角 */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* 容器寬度 */
+  --max-width: 1400px;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===================================================================
+   頂部導覽列 (Navbar)
+   =================================================================== */
+
+.navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.brand-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.brand-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.control-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.select-problem {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--primary);
+  background-color: var(--primary-light);
+  color: var(--primary);
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition);
+}
+
+.select-problem:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+/* ===================================================================
+   主容器結構 (Main Layout)
+   =================================================================== */
+
+.main-content {
+  max-width: var(--max-width);
+  margin: 1.5rem auto;
+  padding: 0 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* 狀態導覽列 / CRISP-DM Stepper */
+.crisp-stepper-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.stepper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.stepper-title {
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.stepper-nav {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+}
+
+.step-tab {
+  background: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+}
+
+.step-tab:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-border);
+}
+
+.step-tab.active {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.step-number {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--text-muted);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-tab.active .step-number {
+  background: var(--primary);
+}
+
+.step-tab.completed .step-number {
+  background: var(--success);
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.step-zh {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.step-en {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ===================================================================
+   通用卡片樣式 (Cards)
+   =================================================================== */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.card-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--primary-light);
+  color: var(--primary);
+  text-transform: uppercase;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* 網格佈局 */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.grid-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+/* ===================================================================
+   功能一 & 功能二：資料集與資料理解區塊
+   =================================================================== */
+
+.dataset-options-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.btn-tab {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-alt);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-tab.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.url-input-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.input-text {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  outline: none;
+  transition: var(--transition);
+}
+
+.input-text:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.file-drop-zone {
+  border: 2px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  text-align: center;
+  background: var(--surface-alt);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.file-drop-zone:hover, .file-drop-zone.dragover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.dataset-stats-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.stat-pill {
+  background: var(--surface-alt);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-pill-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stat-pill-val {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+/* ===================================================================
+   表格樣式 (Tables)
+   =================================================================== */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  margin-top: 1rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.data-table th {
+  background: var(--surface-alt);
+  color: var(--text-secondary);
+  font-weight: 700;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 2px solid var(--border-light);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+
+.data-table tr:hover td {
+  background: var(--primary-light);
+}
+
+.num-cell {
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+/* ===================================================================
+   功能三：特徵工程與訓練配置區塊
+   =================================================================== */
+
+.feature-selection-box {
+  background: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.feature-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.chip-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.chip-item:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.chip-item.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.chip-item input {
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.slider-input {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border-subtle);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-val-badge {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  min-width: 65px;
+  text-align: center;
+}
+
+/* ===================================================================
+   按鈕 (Buttons)
+   =================================================================== */
+
+.btn {
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--surface-alt);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-secondary:hover {
+  background: var(--border-light);
+  color: var(--text-primary);
+}
+
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+
+.btn-success:hover {
+  background: #15803d;
+}
+
+.btn-sm {
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+}
+
+/* ===================================================================
+   功能四：模型評估指標卡 (Evaluation Metric Cards)
+   =================================================================== */
+
+.metrics-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.metric-hero-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.metric-hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary);
+}
+
+.metric-hero-card.accent-emerald::before { background: var(--success); }
+.metric-hero-card.accent-indigo::before { background: var(--accent); }
+.metric-hero-card.accent-amber::before { background: var(--warning); }
+
+.metric-hero-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3rem;
+}
+
+.metric-hero-val {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  line-height: 1.2;
+}
+
+.metric-sub-detail {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 0.4rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.equation-card {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: white;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.equation-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.equation-text {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #38bdf8;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* ===================================================================
+   圖表區塊 (Charts)
+   =================================================================== */
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  margin-top: 0.5rem;
+}
+
+/* ===================================================================
+   功能五：95% 信賴區間與預測區間推論器 (Interval Simulator)
+   =================================================================== */
+
+.interval-comparison-banner {
+  background: var(--info-light);
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1.25rem;
+}
+
+.interval-banner-col {
+  flex: 1;
+}
+
+.interval-banner-col h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0369a1;
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.interval-banner-col p {
+  font-size: 0.85rem;
+  color: #0c4a6e;
+  line-height: 1.5;
+}
+
+.simulator-form {
+  background: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.simulator-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.prediction-output-card {
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  margin-top: 1rem;
+}
+
+.pred-hero-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.pred-hero-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--primary);
+}
+
+.interval-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.interval-box {
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  border: 1px solid transparent;
+}
+
+.interval-box.ci-box {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.interval-box.pi-box {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.interval-box-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.ci-box .interval-box-title { color: #166534; }
+.pi-box .interval-box-title { color: #1e40af; }
+
+.interval-box-range {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.ci-box .interval-box-range { color: #15803d; }
+.pi-box .interval-box-range { color: #2563eb; }
+
+.interval-box-desc {
+  font-size: 0.78rem;
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+}
+
+/* 視覺化長條圖條 */
+.interval-visual-bar-container {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--surface-alt);
+  border-radius: var(--radius-md);
+}
+
+.visual-bar-track {
+  position: relative;
+  height: 36px;
+  background: #e2e8f0;
+  border-radius: var(--radius-full);
+  margin: 1.5rem 0 1rem;
+  overflow: visible;
+}
+
+.visual-band-pi {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  background: rgba(37, 99, 235, 0.25);
+  border: 1px dashed var(--primary);
+  border-radius: var(--radius-full);
+}
+
+.visual-band-ci {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  background: rgba(22, 163, 74, 0.45);
+  border: 1px solid var(--success);
+  border-radius: var(--radius-full);
+}
+
+.visual-pin-point {
+  position: absolute;
+  top: -6px;
+  width: 4px;
+  height: 48px;
+  background: #dc2626;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+/* ===================================================================
+   功能六：CRISP-DM 深度對應六大專區卡片
+   =================================================================== */
+
+.crisp-phases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.crisp-phase-card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.crisp-phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--primary);
+  border-top-left-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-lg);
+}
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.phase-number {
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: var(--primary);
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.phase-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.phase-status-badge {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: var(--success-light);
+  color: var(--success);
+  border: 1px solid #bbf7d0;
+}
+
+.phase-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.phase-content-box {
+  background: var(--surface-alt);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* ===================================================================
+   錯誤與通知彈窗 (Modal & Alerts)
+   =================================================================== */
+
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.alert-danger {
+  background: var(--danger-light);
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.alert-warning {
+  background: var(--warning-light);
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.alert-info {
+  background: var(--info-light);
+  border: 1px solid #bae6fd;
+  color: #075985;
+}
+
+.alert-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.link-download {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* 模態框 (Modal) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  max-width: 560px;
+  width: 90%;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  transform: translateY(10px);
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay.show .modal-card {
+  transform: translateY(0);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+/* 標籤小徽章 */
+.badge-sig {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background: #fef08a;
+  color: #854d0e;
+}
+
+/* 頁尾 */
+.footer {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border-light);
+  margin-top: 3rem;
+}
+
+/* ===================================================================
+   響應式設計 (Responsive Media Queries)
+   =================================================================== */
+
+@media (max-width: 1024px) {
+  .stepper-nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-2col, .grid-3col, .grid-4col, .metrics-hero-grid, .crisp-phases-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dataset-stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stepper-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .dataset-stats-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .interval-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .interval-comparison-banner {
+    flex-direction: column;
+  }
+}
